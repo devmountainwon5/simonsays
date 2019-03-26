@@ -1,0 +1,29 @@
+.button {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+}
+
+#wrapper {
+    width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.border {
+    border: 5px solid black;
+}
+#yellow {
+    background: yellow
+}
+
+#red {
+    background: red
+}
+
+#blue {
+    background: blue
+}
+
+#green {
+    background: green;
+}
