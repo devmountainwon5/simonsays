@@ -12,15 +12,15 @@ var whosTurnIsIt = 'computers'
 // var quitButton
 
 //initial setup
-for(let i = 0; i<buttons.length; i++){
+for(let i = 0; i<buttons.length; i++) {
     buttons[i].addEventListener('click', handleButton(buttons[i].id))
 }
 
 //game logic
 startGame()
 
-function startGame (){
-    console.log('Game is Starting! Picking New Color')
+function startGame() {
+    console.log('Game is Starting! Picking a New Color')
     setTimeout(()=> {
         pickNewColor()
         setTimeout(()=> {
@@ -37,13 +37,13 @@ function pickNewColor() {
 function cycle(cb) {
     function runCycle(){
         let i = 0
-        var cycleInterval = setInterval(()=> {
+        var cycleInterval = setInterval(() => {
             blink(simonsArray[i])
             i++
             if(i === counter ){
                 counter = 0
 
-                setTimeout(()=>{
+                setTimeout(() => {
                     clearInterval(cycleInterval) 
                     cb()
                     i=0
@@ -58,16 +58,16 @@ function cycle(cb) {
 }
 function handleButton(id) {
     //everything in here happens when our 'click' event triggers
-    return function (){
+    return function() {
         document.getElementById(id).style.background = 'white'
-        setTimeout(()=> {
+        setTimeout(() => {
             document.getElementById(id).style.background = id
         }, 80)
 
         counter++
-        if (counter === simonsArray.length && id === simonsArray[counter-1].id) {
+        if(counter === simonsArray.length && id === simonsArray[counter-1].id) {
             handlePlayerTurns() 
-        } else if (id === simonsArray[counter-1].id) {
+        } else if(id === simonsArray[counter-1].id) {
             console.log('guess the next one')
         } else {
             setTimeout(()=> {
@@ -84,26 +84,26 @@ function handleButton(id) {
 
 function blink(DOMele){
     var blinking = setInterval(()=> {
-        if(DOMele){
-            DOMele.classList.toggle('border')
-        }
+            if(DOMele) {
+                DOMele.classList.toggle('border')
+            }
         }, 100)
     setTimeout(()=>{
-        if(DOMele){
-            DOMele.classList.remove('border')
-        }
+            if(DOMele) {
+                DOMele.classList.remove('border')
+            }
         clearInterval(blinking)
-        },400)
+        }, 400)
 }
 
-function handlePlayerTurns(){
-    if(whosTurnIsIt === 'computers'){
-        whosTurnIsIt = 'player'
+function handlePlayerTurns() {
+    if(whosTurnIsIt === 'computers') {
         console.log('[playersTurn]')
+        whosTurnIsIt = 'player'
         
-    } else if (whosTurnIsIt === 'player' && counter === simonsArray.length){
-        whosTurnIsIt = 'computers'
+    } else if(whosTurnIsIt === 'player' && counter === simonsArray.length) {
         console.log('[compTurn]')
+        whosTurnIsIt = 'computers'
         cycle(pickNewColor)
     }
 }
