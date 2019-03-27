@@ -1,8 +1,8 @@
 //TODO list:
-//bring in .mp3 sounds and assign to each button
-//prevent player from clicking while cycle runs
 //display and handle logic for current score and high score
 //display and handle logic for quit button
+//bring in .mp3 sounds and assign to each button
+//bug: player can interupt cycle by clicking on buttons
 
 var buttons = document.getElementsByClassName('button')
 var simonsArray = []
