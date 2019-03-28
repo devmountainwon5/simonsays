@@ -36,26 +36,23 @@ function pickNewColor() {
     blink(randomButton)
 }
 function cycle(cb) {
-    function runCycle(){
-        let i = 0
-        var cycleInterval = setInterval(() => {
-            blink(simonsArray[i])
-            i++
-            if(i === counter ){
-                counter = 0
+    let i = 0
+    var cycleInterval = setInterval(() => {
+        blink(simonsArray[i])
+        i++
+        if(i === counter ){
+            counter = 0
 
-                setTimeout(() => {
-                    clearInterval(cycleInterval) 
-                    cb()
-                    i=0
-                    setTimeout(()=> {
-                        handlePlayerTurns()
-                    }, 500)
-                }, 1000)
-            }
-        }, 1000)
-    }
-    runCycle()
+            setTimeout(() => {
+                clearInterval(cycleInterval) 
+                cb()
+                i=0
+                setTimeout(()=> {
+                    handlePlayerTurns()
+                }, 500)
+            }, 1000)
+        }
+    }, 1000)
 }
 function handleButton(id) {
     //everything in here happens when our 'click' event triggers
