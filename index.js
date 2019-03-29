@@ -9,12 +9,22 @@ var simonsArray = []
 var counter = 0
 var whosTurnIsIt = 'computers'
 
+var yelSound = document.createElement('audio')
+    yelSound.setAttribute('src', './assets/sounds/bell.mp3')
+var redSound = document.createElement('audio')
+    redSound.setAttribute('src', './assets/sounds/dadum.mp3')
+var bluSound = document.createElement('audio')
+    bluSound.setAttribute('src', './assets/sounds/dreamMallet.mp3')
+var greSound = document.createElement('audio')
+    greSound.setAttribute('src', './assets/sounds/laser.mp3')
+
 // var scoreKeeper
 // var quitButton
 
 //initial setup
 for(let i = 0; i<buttons.length; i++) {
     buttons[i].addEventListener('click', handleButton(buttons[i].id))
+    
 }
 
 //game logic
@@ -57,7 +67,25 @@ function cycle(cb) {
 function handleButton(id) {
     //everything in here happens when our 'click' event triggers
     return function() {
+        switch(id){
+            case 'yellow':
+            cloneAndPlay(yelSound)
+            break;
+            case 'blue':
+            cloneAndPlay(bluSound)
+            break;
+            case 'green':
+            cloneAndPlay(greSound)
+            break;
+            case 'red':
+            cloneAndPlay(redSound)
+            break;
+            default:
+            return;
+        }
+        
         document.getElementById(id).style.background = 'white'
+            
         setTimeout(() => {
             document.getElementById(id).style.background = id
         }, 80)
@@ -81,6 +109,26 @@ function handleButton(id) {
 }
 
 function blink(DOMele){
+    //sounds
+    if (DOMele){
+        switch(DOMele.id){
+            case 'yellow':
+            cloneAndPlay(yelSound)
+            break;
+            case 'blue':
+            cloneAndPlay(bluSound)
+            break;
+            case 'green':
+            cloneAndPlay(greSound)
+            break;
+            case 'red':
+            cloneAndPlay(redSound)
+            break;
+            default:
+            return;
+        }
+    }
+        
     var blinking = setInterval(()=> {
             if(DOMele) {
                 DOMele.classList.toggle('border')
@@ -104,4 +152,9 @@ function handlePlayerTurns() {
         whosTurnIsIt = 'computers'
         cycle(pickNewColor)
     }
+}
+
+function cloneAndPlay(sound){
+    var clonedSound = sound.cloneNode()
+    clonedSound.play()
 }
