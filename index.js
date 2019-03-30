@@ -10,13 +10,13 @@ var counter = 0
 var whosTurnIsIt = 'computers'
 
 var yelSound = document.createElement('audio')
-    yelSound.setAttribute('src', './assets/sounds/bell.mp3')
+    yelSound.setAttribute('src', './assets/sounds/yellow.wav')
 var redSound = document.createElement('audio')
-    redSound.setAttribute('src', './assets/sounds/dadum.mp3')
+    redSound.setAttribute('src', './assets/sounds/red.wav')
 var bluSound = document.createElement('audio')
-    bluSound.setAttribute('src', './assets/sounds/dreamMallet.mp3')
+    bluSound.setAttribute('src', './assets/sounds/blue.wav')
 var greSound = document.createElement('audio')
-    greSound.setAttribute('src', './assets/sounds/laser.mp3')
+    greSound.setAttribute('src', './assets/sounds/green.wav')
 
 // var scoreKeeper
 // var quitButton
@@ -28,7 +28,7 @@ for(let i = 0; i<buttons.length; i++) {
 }
 
 //game logic
-startGame()
+document.onload = startGame()
 
 function startGame() {
     console.log('Game is Starting! Picking a New Color')
@@ -60,9 +60,9 @@ function cycle(cb) {
                 setTimeout(()=> {
                     handlePlayerTurns()
                 }, 500)
-            }, 1000)
+            }, 500)
         }
-    }, 1000)
+    }, 500)
 }
 function handleButton(id) {
     //everything in here happens when our 'click' event triggers
@@ -150,7 +150,9 @@ function handlePlayerTurns() {
     } else if(whosTurnIsIt === 'player' && counter === simonsArray.length) {
         console.log('[compTurn]')
         whosTurnIsIt = 'computers'
-        cycle(pickNewColor)
+        setTimeout(()=> {
+            cycle(pickNewColor)
+        }, 1000)
     }
 }
 
