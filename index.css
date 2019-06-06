@@ -1,3 +1,6 @@
+* {
+    box-sizing: border-box;
+}
 .button {
     width: 100px;
     height: 100px;
@@ -9,6 +12,19 @@
     width: 250px;
     display: flex;
     flex-wrap: wrap;
+}
+#gameBoard {
+    position: relative;
+}
+#countDown {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    left: 85px;
+    top: 93px;
+    line-height: 50px;
+    font-size: 50px;
+    padding-left: 12px;
 }
 .border {
     border: 5px solid black;

@@ -8,12 +8,19 @@
     <title>Simon Says</title>
 </head>
 <body>
-    <div id="wrapper">
-        <div class="button" id="blue"></div>
-        <div class="button" id="red"></div>
-        <div class="button" id="green"></div>
-        <div class="button" id="yellow"></div>
-        <script src="index.js"></script>
+    <header><h1>Simon Says</h1></header>
+    <div id="gameBoard">
+        <div id="countDown" style="background: none;"></div>
+        <div id="wrapper">
+            <div class="button" id="blue"></div>
+            <div class="button" id="red"></div>
+            <div class="button" id="green"></div>
+            <div class="button" id="yellow"></div>
+        </div>
     </div>
+    <button id="start">New Game</button>
+    <div>Score: <span id="score"></span></div>
+    <div>High Score: <span id="highscore"></span></div>
 </body>
+<script src="index.js"></script>
 </html>
