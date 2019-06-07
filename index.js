@@ -96,7 +96,7 @@ function blinkAndPlay(id){
             document.getElementById(id).style.background = id
         }
         i++
-    }, 80)
+    }, 40)
 
     if (id){
         switch(id){
