@@ -1,188 +1,119 @@
-//TODO list:
-//display and handle logic for current score and high score
-//display and handle logic for quit button
-//bring in .mp3 sounds and assign to each button
-//bug: player can interupt cycle by clicking on buttons
-
-
 var buttons = document.getElementsByClassName('button')
 var simonsArray = []
 var counter = 0
-var whosTurnIsIt = 'computers'
 var clonedSound = {}
-var countDownTimer = 3
+var gameOver = false
 
 var yelSound = document.createElement('audio'); yelSound.setAttribute('src', './assets/sounds/yellow.wav')
 var redSound = document.createElement('audio'); redSound.setAttribute('src', './assets/sounds/red.wav')
 var bluSound = document.createElement('audio'); bluSound.setAttribute('src', './assets/sounds/blue.wav')
 var greSound = document.createElement('audio'); greSound.setAttribute('src', './assets/sounds/green.wav')
 
-// 1. computer picks a random color and adds to simons array, that button will blink. 
-// 2. simons array will cycle and play.
-// 3. player will immitate the cycle.
-//      after each click 
-//          perform check 
-//              see if my array.length == simons array.length
-//              no? 
-//                  see if my array == simons array
-//                  yes? allow next click
-//                  no? game over
-//              yes?
-//              start over at 1.
-
 //initial setup
-window.onload = function() {
-    const start = document.getElementById('start')
-    start.addEventListener('click', () => {
-        // startCountdown()
-        handlePlayerTurns()
+onload = function() {
+    document.getElementById('start').addEventListener('click', () => {
+        startNewGame()
     })
     for(let i = 0; i<buttons.length; i++) {
-        buttons[i].addEventListener('click', () => handleButton(buttons[i].id))
+        buttons[i].addEventListener('click', () => playerClicks(buttons[i].id))
     }
 }
 
-async function pickNewColor () {
-    console.log('[1. pickNewcolor add to array it will blink] simonsArray:', simonsArray)
+//game logic
+function pickNewColor() {
     var randomButton = buttons[Math.trunc(Math.random()*4)]
     simonsArray.push(randomButton)
-    await blink(randomButton)
+    cycleSimonsArray()
 }
-//game logic
-function handlePlayerTurns() {
-    if(whosTurnIsIt === 'computers') {
-        if (simonsArray.length === 0){
-            console.log('Game is Starting! Picking a New Color')
-            pickNewColor()
-        } else {
-            console.log('[playersTurn]')
-            whosTurnIsIt = 'player'
-        }
-        
-    } else if(whosTurnIsIt === 'player' && counter === simonsArray.length) {
-        console.log('[compTurn]')
-        whosTurnIsIt = 'computers'
-        setTimeout(()=>cycleSimonsArray(), 1500)
-    }
-}
-
 
 function cycleSimonsArray() {
-    console.log('[cycling simons array]')
     let i = 0
-    var cycleInterval = setInterval(() => {
-        blink(simonsArray[i])
-        i++
-        if (i === counter ){
-            counter = 0
-            setTimeout(() => {
-                i=0
-                clearInterval(cycleInterval, handlePlayerTurns)
-            }, 500)
+    const cycleInterval = setInterval(() => {
+        if (i >= simonsArray.length || gameOver ){
+            clearInterval(cycleInterval)
+            return
         }
-    }, 500)
+        blinkAndPlay(simonsArray[i].id)
+        i++
+    }, 300)
 }
-function handleButton(id) {
-    let backgroundColor = document.getElementById(id).style.background
-    switch(id){
-        case 'yellow':
-            cloneAndPlay(yelSound)
-            break;
-        case 'blue':
-            cloneAndPlay(bluSound)
-            break;
-        case 'green':
-            cloneAndPlay(greSound)
-            break;
-        case 'red':
-            cloneAndPlay(redSound)
-            break;
-        default:
-            return;
-    } 
-    backgroundColor = 'white'
-        
-    setTimeout(() => {
-        backgroundColor = id
-    }, 80)
 
-    counter++
-    if(counter === simonsArray.length && id === simonsArray[counter-1].id) {
-        handlePlayerTurns() 
-    } else if(id === simonsArray[counter-1].id) {
-        console.log('guess the next one')
-    } else {
-        setTimeout(()=> {
-            alert('GAME OVER! \nTry again.')
+function playerClicks(id) {
+    if(!gameOver){
+        counter++
+        if(counter === simonsArray.length && id === simonsArray[counter-1].id) {
+            handleScore(counter)
+            setTimeout(()=>pickNewColor(), 1000)
             counter = 0
-            simonsArray = []
-            whosTurnIsIt = 'computers'
-            handlePlayerTurns()
-        }, 100)
-
+        } else if(id === simonsArray[counter-1].id) {
+            handleScore(counter)
+            console.log('guess the next one')
+        } else {
+            gameOver = true
+            alert('GAME OVER! \nTry again.')
+            return
+        }
+        blinkAndPlay(id)
+    
+    } else {
+        alert('Click \'new game\' to play.')
     }
 }
 
-
-
-
-
-
 //utility functions:
+function handleScore(tally){
+    let highscore = document.getElementById('highscore')
+    let score = document.getElementById('score')
+    if (tally >= score.innerHTML){
+        score.innerHTML = tally
+    }
+    if (Number(score.innerHTML) >= Number(highscore.innerHTML)){
+        highscore.innerHTML = score.innerHTML
+    }
+}
+function startNewGame(){
+    counter = 0
+    simonsArray = []
+    gameOver = false
+    document.getElementById('score').innerHTML = 0
+    pickNewColor()
+}
 
-function cloneAndPlay(sound){
+function playClone(sound){
     clonedSound = sound.cloneNode()
     clonedSound.play().catch(e=> console.log(e.message))
 }
 
-function blink(myButton){
-    //sounds
-    var blinking = setInterval(()=> {
-        if(myButton) {
-            myButton.classList.toggle('border')
+function blinkAndPlay(id){
+    let i = 0
+    let blinking = setInterval(() => {
+        if(i===3) {
+            clearInterval(blinking)
         }
-    }, 100)
-    setTimeout(()=>{
-        if(myButton) {
-            myButton.classList.remove('border')
+        if (i % 2 === 0){
+            document.getElementById(id).style.background = 'white'
+        } else {
+            document.getElementById(id).style.background = id
         }
-        clearInterval(blinking)
-    }, 400)
+        i++
+    }, 80)
 
-    if (myButton){
-        switch(myButton.id){
+    if (id){
+        switch(id){
             case 'yellow':
-                cloneAndPlay(yelSound)
+                playClone(yelSound)
                 break;
             case 'blue':
-                cloneAndPlay(bluSound)
+                playClone(bluSound)
                 break;
             case 'green':
-                cloneAndPlay(greSound)
+                playClone(greSound)
                 break;
             case 'red':
-                cloneAndPlay(redSound)
+                playClone(redSound)
                 break;
             default:
                 return;
         }
-    }
-}
-
-//production ready:
-
-function startCountdown() {
-    const countDown = document.getElementById('countDown')
-    countDown.style.background = 'white';
-    countDown.innerHTML = countDownTimer
-    if(!countDownTimer < 1){
-        countDownTimer--
-        setTimeout(() => {
-            startCountdown()
-        }, 1000)
-    } else {
-        countDown.innerHTML = ""
-        countDown.style.background = 'none';
-        handlePlayerTurns()
     }
 }
